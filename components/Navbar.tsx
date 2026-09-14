@@ -29,12 +29,12 @@ export default function Navbar() {
           : "border-b border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8 md:justify-start">
         <a href="#home" className="text-xl font-extrabold tracking-tight text-slate-950">
           Kernel<span className="text-blue-600">.</span>
         </a>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-8 md:ml-auto md:flex">
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
@@ -48,7 +48,7 @@ export default function Navbar() {
 
         <a
           href="#contact"
-          className="group hidden items-center gap-1.5 rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 md:inline-flex"
+          className="group hidden items-center gap-1.5 rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 md:ml-8 md:inline-flex"
         >
           Liên hệ ngay
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
