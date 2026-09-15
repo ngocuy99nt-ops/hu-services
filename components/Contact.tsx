@@ -27,19 +27,36 @@ const fadeUp: Variants = {
 export default function Contact() {
   const [form, setForm] = useState<FormState>(INITIAL_STATE);
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus("submitting");
-    window.setTimeout(() => {
+    setErrorMessage(null);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error ?? "Gửi yêu cầu thất bại. Vui lòng thử lại.");
+      }
+
       setStatus("success");
       setForm(INITIAL_STATE);
-    }, 1200);
+    } catch (err) {
+      setStatus("idle");
+      setErrorMessage(err instanceof Error ? err.message : "Gửi yêu cầu thất bại. Vui lòng thử lại.");
+    }
   };
 
   return (
