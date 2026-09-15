@@ -40,6 +40,9 @@ jobs:
           echo "=== Validate Docker Compose ==="
           docker compose config -q
 
+          echo "=== Clean up old Docker data (prevent disk exhaustion) ==="
+          docker system prune -f
+
           echo "=== Build & Deploy ==="
           docker compose up -d --build --remove-orphans
 

@@ -8,3 +8,5 @@ docker-compose.yml
 .dockerignore
 .claude
 npm-debug.log*
+actions-runner
+_work
