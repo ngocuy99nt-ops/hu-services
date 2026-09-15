@@ -13,7 +13,7 @@ type Service = {
 const SERVICES: Service[] = [
   {
     icon: LayoutDashboard,
-    title: "Hệ thống Quản lý Nội bộ",
+    title: "Hệ thống Quản lý Nội bộ 123",
     description:
       "Xây dựng ứng dụng web theo đúng quy trình vận hành của doanh nghiệp, giúp quản lý dữ liệu tập trung và giảm phụ thuộc vào Excel.",
     features: [
