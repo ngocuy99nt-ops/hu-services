@@ -1,0 +1,47 @@
+name: Deploy hu-services
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+concurrency:
+  group: hu-services-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on:
+      - self-hosted
+      - linux
+      - x64
+
+    timeout-minutes: 20
+
+    steps:
+      - name: Deploy hu-services
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          cd /home/ubuntu/hu-services
+
+          echo "=== Fetch source ==="
+          git fetch origin main
+
+          echo "=== Checkout main ==="
+          git checkout main
+
+          echo "=== Update source ==="
+          git reset --hard origin/main
+
+          echo "=== Validate Docker Compose ==="
+          docker compose config -q
+
+          echo "=== Build & Deploy ==="
+          docker compose up -d --build --remove-orphans
+
+          echo "=== Container Status ==="
+          docker compose ps
