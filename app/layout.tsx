@@ -7,9 +7,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Kernel — Đối tác Công nghệ Vận hành cho Doanh nghiệp",
+  title: "HU Web Services — Đối tác Công nghệ Vận hành cho Doanh nghiệp",
   description:
-    "Xây dựng Hệ thống Quản lý Kho (WMS), Nền tảng Bán hàng Đa kênh và Giải pháp ERP may đo cho doanh nghiệp SME, chủ kho bãi và thương hiệu TMĐT.",
+    "Phát triển hệ thống quản lý nội bộ, tự động hóa quy trình và tích hợp API theo nhu cầu thực tế của doanh nghiệp.",
 };
 
 export default function RootLayout({

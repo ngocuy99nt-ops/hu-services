@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Mail } from "lucide-react";
 
 function GithubIcon({ className }: { className?: string }) {
@@ -33,8 +34,11 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <div className="grid gap-12 md:grid-cols-3">
           <div>
-            <a href="#home" className="text-xl font-extrabold tracking-tight text-slate-950">
-              Kernel<span className="text-blue-600">.</span>
+            <a href="#home" className="flex items-center gap-2">
+              <Image src="/logo-icon.png" alt="HU Web Services logo" width={32} height={32} className="h-8 w-8" />
+              <span className="text-xl font-extrabold tracking-tight text-slate-950">
+                HU <span className="text-blue-600">Web Services</span>
+              </span>
             </a>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-600">
               Đối tác công nghệ vận hành cho doanh nghiệp SME, chủ kho bãi và thương hiệu thương mại điện tử.
@@ -81,7 +85,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 border-t border-slate-200 pt-8 text-center text-sm text-slate-500">
-          © {new Date().getFullYear()} Kernel. Bảo lưu mọi quyền.
+          © {new Date().getFullYear()} HU Web Services. Bảo lưu mọi quyền.
         </div>
       </div>
     </footer>

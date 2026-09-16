@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Menu, X } from "lucide-react";
 
@@ -30,8 +31,11 @@ export default function Navbar() {
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8 md:justify-start">
-        <a href="#home" className="text-xl font-extrabold tracking-tight text-slate-950">
-          Kernel<span className="text-blue-600">.</span>
+        <a href="#home" className="flex items-center gap-2">
+          <Image src="/logo-icon.png" alt="HU Web Services logo" width={32} height={32} className="h-8 w-8" priority />
+          <span className="text-lg font-extrabold tracking-tight text-slate-950 sm:text-xl">
+            HU <span className="text-blue-600">Web Services</span>
+          </span>
         </a>
 
         <nav className="hidden items-center gap-8 md:ml-auto md:flex">

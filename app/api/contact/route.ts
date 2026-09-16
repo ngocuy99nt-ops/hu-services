@@ -51,7 +51,7 @@ export async function POST(request: Request) {
   try {
     const resend = new Resend(apiKey);
     const { error } = await resend.emails.send({
-      from: process.env.CONTACT_FROM_EMAIL ?? "Kernel Portfolio <onboarding@resend.dev>",
+      from: process.env.CONTACT_FROM_EMAIL ?? "HU Web Services <onboarding@resend.dev>",
       to: toEmail,
       replyTo: email,
       subject: `Yêu cầu tư vấn mới từ ${name}`,
