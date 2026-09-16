@@ -14,8 +14,8 @@ type FormState = {
 const INITIAL_STATE: FormState = { name: "", email: "", phone: "", message: "" };
 
 const CONTACT_INFO = [
-  { icon: Mail, label: "Email", value: "hi@kernel.dev" },
-  { icon: Phone, label: "Điện thoại", value: "+84 9xx xxx xxx" },
+  { icon: Mail, label: "Email", value: "hp926206@gmail.com" },
+  { icon: Phone, label: "Điện thoại", value: "+84 978 083 806" },
   { icon: MapPin, label: "Khu vực", value: "Làm việc từ xa — trên toàn quốc" },
 ];
 

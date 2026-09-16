@@ -71,11 +71,11 @@ export default function Footer() {
               ))}
             </div>
             <a
-              href="mailto:hi@kernel.dev"
+              href="mailto:hp926206@gmail.com"
               className="mt-4 inline-flex items-center gap-2 text-sm text-slate-600 transition-colors hover:text-blue-600"
             >
               <Mail className="h-4 w-4" />
-              hi@kernel.dev
+              hp926206@gmail.com
             </a>
           </div>
         </div>
