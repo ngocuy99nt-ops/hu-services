@@ -1,0 +1,17 @@
+export const TECHNOLOGIES: string[] = [
+  "Laravel",
+  "PHP",
+  "Go",
+  "React",
+  "JavaScript",
+  "TypeScript",
+  "MySQL",
+  "PostgreSQL",
+  "Redis",
+  "Docker",
+  "AWS",
+  "Nginx",
+  "REST API",
+  "gRPC",
+  "AI / OCR",
+];

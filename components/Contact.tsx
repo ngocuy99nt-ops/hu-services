@@ -1,35 +1,43 @@
 "use client";
 
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { motion, type Variants } from "framer-motion";
-import { CheckCircle2, Loader2, Mail, MapPin, Phone, Send } from "lucide-react";
+import { motion } from "framer-motion";
+import { CheckCircle2, Loader2, Mail, MessageCircle, Phone, Send } from "lucide-react";
+import { useFadeUp } from "@/lib/motion";
+import { SITE } from "@/data/site";
+import { SERVICE_OPTIONS, BUDGET_OPTIONS } from "@/data/contact";
 
 type FormState = {
   name: string;
-  email: string;
-  phone: string;
+  contact: string;
+  service: string;
+  budget: string;
   message: string;
+  company: string;
 };
 
-const INITIAL_STATE: FormState = { name: "", email: "", phone: "", message: "" };
+const INITIAL_STATE: FormState = {
+  name: "",
+  contact: "",
+  service: "",
+  budget: "",
+  message: "",
+  company: "",
+};
 
-const CONTACT_INFO = [
-  { icon: Mail, label: "Email", value: "support@huwebservices.site" },
-  { icon: Phone, label: "Điện thoại", value: "+84 978 083 806" },
-  { icon: MapPin, label: "Khu vực", value: "Làm việc từ xa — trên toàn quốc" },
+const CONTACT_CHANNELS = [
+  { icon: MessageCircle, label: "Zalo", value: "Chat qua Zalo", href: SITE.zalo },
+  { icon: Mail, label: "Email", value: SITE.email, href: SITE.emailHref },
+  { icon: Phone, label: "Điện thoại", value: SITE.phone, href: SITE.phoneHref },
 ];
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
 
 export default function Contact() {
   const [form, setForm] = useState<FormState>(INITIAL_STATE);
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const fadeUp = useFadeUp();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
@@ -60,34 +68,39 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="bg-white py-24 md:py-32">
+    <section id="contact" className="bg-base py-24 md:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid gap-16 lg:grid-cols-5">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
+            custom={0}
             variants={fadeUp}
             className="lg:col-span-2"
           >
-            <span className="text-sm font-semibold uppercase tracking-wider text-blue-600">Liên hệ</span>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
-              Sẵn sàng số hóa vận hành doanh nghiệp?
+            <span className="text-sm font-semibold uppercase tracking-wider text-accent">Get in touch</span>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
+              Có ý tưởng? Cùng xây thứ gì đó hữu ích.
             </h2>
-            <p className="mt-4 text-lg text-slate-600">
-              Để lại thông tin, tôi sẽ phản hồi trong vòng 24 giờ làm việc để lên lịch khảo sát và tư vấn miễn phí.
+            <p className="mt-4 text-lg text-muted">
+              Cho tôi biết ngắn gọn bạn đang xây gì. Tôi sẽ giúp bạn xác định hướng kỹ thuật phù hợp nhất.
             </p>
 
             <ul className="mt-10 flex flex-col gap-5">
-              {CONTACT_INFO.map((info) => (
-                <li key={info.label} className="flex items-center gap-4">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                    <info.icon className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-medium text-slate-500">{info.label}</p>
-                    <p className="text-sm font-semibold text-slate-950">{info.value}</p>
-                  </div>
+              {CONTACT_CHANNELS.map((channel) => (
+                <li key={channel.label}>
+                  <a href={channel.href} className="group flex items-center gap-4">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-accent">
+                      <channel.icon className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium text-muted">{channel.label}</p>
+                      <p className="text-sm font-semibold text-ink transition-colors group-hover:text-accent">
+                        {channel.value}
+                      </p>
+                    </div>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -97,30 +110,45 @@ export default function Contact() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
+            custom={1}
             variants={fadeUp}
             className="lg:col-span-3"
           >
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-8">
+            <div className="rounded-2xl border border-white/10 bg-card p-8">
               {status === "success" ? (
                 <div className="flex min-h-[320px] flex-col items-center justify-center text-center">
-                  <CheckCircle2 className="h-12 w-12 text-blue-600" />
-                  <h3 className="mt-4 text-xl font-bold text-slate-950">Đã gửi yêu cầu thành công!</h3>
-                  <p className="mt-2 max-w-sm text-sm text-slate-600">
-                    Cảm ơn bạn đã liên hệ. Tôi sẽ phản hồi qua email hoặc số điện thoại bạn cung cấp trong thời gian sớm nhất.
+                  <CheckCircle2 className="h-12 w-12 text-accent" />
+                  <h3 className="mt-4 text-xl font-bold text-ink">Đã gửi yêu cầu thành công!</h3>
+                  <p className="mt-2 max-w-sm text-sm text-muted">
+                    Cảm ơn bạn đã liên hệ. Tôi sẽ phản hồi qua thông tin bạn cung cấp trong thời gian sớm nhất.
                   </p>
                   <button
                     type="button"
                     onClick={() => setStatus("idle")}
-                    className="mt-6 text-sm font-semibold text-blue-600 hover:text-blue-700"
+                    className="mt-6 text-sm font-semibold text-accent hover:text-ink"
                   >
                     Gửi một yêu cầu khác
                   </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                  {/* Honeypot field — hidden from real visitors, silently rejects bots that auto-fill it */}
+                  <div className="hidden" aria-hidden="true">
+                    <label htmlFor="company">Company</label>
+                    <input
+                      id="company"
+                      name="company"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={form.company}
+                      onChange={handleChange}
+                    />
+                  </div>
+
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div className="flex flex-col gap-2">
-                      <label htmlFor="name" className="text-sm font-medium text-slate-700">
+                      <label htmlFor="name" className="text-sm font-medium text-slate-300">
                         Họ và tên
                       </label>
                       <input
@@ -128,65 +156,105 @@ export default function Contact() {
                         name="name"
                         type="text"
                         required
+                        maxLength={100}
                         value={form.name}
                         onChange={handleChange}
                         placeholder="Nguyễn Văn A"
-                        className="rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition-colors placeholder:text-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20"
+                        className="rounded-xl border border-white/10 bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accent/20"
                       />
                     </div>
                     <div className="flex flex-col gap-2">
-                      <label htmlFor="email" className="text-sm font-medium text-slate-700">
-                        Email
+                      <label htmlFor="contact" className="text-sm font-medium text-slate-300">
+                        Điện thoại hoặc Email
                       </label>
                       <input
-                        id="email"
-                        name="email"
-                        type="email"
+                        id="contact"
+                        name="contact"
+                        type="text"
                         required
-                        value={form.email}
+                        maxLength={100}
+                        value={form.contact}
                         onChange={handleChange}
-                        placeholder="ban@congty.vn"
-                        className="rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition-colors placeholder:text-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20"
+                        placeholder="09xx xxx xxx hoặc ban@congty.vn"
+                        className="rounded-xl border border-white/10 bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accent/20"
                       />
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="phone" className="text-sm font-medium text-slate-700">
-                      Số điện thoại
-                    </label>
-                    <input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      required
-                      value={form.phone}
-                      onChange={handleChange}
-                      placeholder="09xx xxx xxx"
-                      className="rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition-colors placeholder:text-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20"
-                    />
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <div className="flex flex-col gap-2">
+                      <label htmlFor="service" className="text-sm font-medium text-slate-300">
+                        Dịch vụ quan tâm
+                      </label>
+                      <select
+                        id="service"
+                        name="service"
+                        required
+                        value={form.service}
+                        onChange={handleChange}
+                        className="rounded-xl border border-white/10 bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors focus:border-accent focus:ring-2 focus:ring-accent/20"
+                      >
+                        <option value="" disabled>
+                          Chọn dịch vụ
+                        </option>
+                        {SERVICE_OPTIONS.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <label htmlFor="budget" className="text-sm font-medium text-slate-300">
+                        Ngân sách dự kiến
+                      </label>
+                      <select
+                        id="budget"
+                        name="budget"
+                        required
+                        value={form.budget}
+                        onChange={handleChange}
+                        className="rounded-xl border border-white/10 bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors focus:border-accent focus:ring-2 focus:ring-accent/20"
+                      >
+                        <option value="" disabled>
+                          Chọn khoảng ngân sách
+                        </option>
+                        {BUDGET_OPTIONS.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="message" className="text-sm font-medium text-slate-700">
-                      Nội dung yêu cầu
+                    <label htmlFor="message" className="text-sm font-medium text-slate-300">
+                      Mô tả dự án
                     </label>
                     <textarea
                       id="message"
                       name="message"
                       required
                       rows={4}
+                      maxLength={2000}
                       value={form.message}
                       onChange={handleChange}
-                      placeholder="Mô tả ngắn gọn bài toán vận hành hoặc hệ thống bạn đang cần..."
-                      className="resize-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition-colors placeholder:text-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20"
+                      placeholder="Mô tả ngắn gọn bài toán hoặc hệ thống bạn đang cần..."
+                      className="resize-none rounded-xl border border-white/10 bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accent/20"
                     />
                   </div>
+
+                  {errorMessage && (
+                    <p className="text-sm text-red-400" role="alert">
+                      {errorMessage}
+                    </p>
+                  )}
 
                   <button
                     type="submit"
                     disabled={status === "submitting"}
-                    className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-blue-600 px-7 py-3.5 text-base font-semibold text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
+                    className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 text-base font-semibold text-ink transition-colors hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                   >
                     {status === "submitting" ? (
                       <>

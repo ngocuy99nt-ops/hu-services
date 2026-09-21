@@ -1,11 +1,46 @@
 @import "tailwindcss";
 
+@theme {
+  --color-base: #070b14;
+  --color-surface: #0b1120;
+  --color-card: #111827;
+  --color-primary: #3b82f6;
+  --color-accent: #22d3ee;
+  --color-ink: #f8fafc;
+  --color-muted: #94a3b8;
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-base);
 }
 
 ::selection {
-  background-color: #2563eb;
-  color: #ffffff;
+  background-color: var(--color-primary);
+  color: var(--color-ink);
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -4,12 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Menu, X } from "lucide-react";
-
-const NAV_LINKS = [
-  { href: "#services", label: "Dịch vụ" },
-  { href: "#workflow", label: "Quy trình" },
-  { href: "#contact", label: "Liên hệ" },
-];
+import { NAV_ITEMS, SITE } from "@/data/site";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -25,25 +20,23 @@ export default function Navbar() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        scrolled
-          ? "border-b border-slate-200 bg-slate-50/80 backdrop-blur-md"
-          : "border-b border-transparent bg-transparent"
+        scrolled ? "border-b border-white/10 bg-base/80 backdrop-blur-md" : "border-b border-transparent bg-transparent"
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8 md:justify-start">
         <a href="#home" className="flex items-center gap-2">
-          <Image src="/logo-icon.png" alt="HU Web Services logo" width={32} height={32} className="h-8 w-8" priority />
-          <span className="text-lg font-extrabold tracking-tight text-slate-950 sm:text-xl">
-            HU <span className="text-blue-600">Web Services</span>
+          <Image src="/logo-icon.png" alt={`${SITE.name} logo`} width={32} height={32} className="h-8 w-8" priority />
+          <span className="text-lg font-extrabold tracking-tight text-ink sm:text-xl">
+            {SITE.shortName} <span className="text-accent">Web Services</span>
           </span>
         </a>
 
         <nav className="hidden items-center gap-8 md:ml-auto md:flex">
-          {NAV_LINKS.map((link) => (
+          {NAV_ITEMS.map((link) => (
             <a
-              key={link.href}
+              key={link.label}
               href={link.href}
-              className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
+              className="text-sm font-medium text-muted transition-colors hover:text-ink"
             >
               {link.label}
             </a>
@@ -52,16 +45,16 @@ export default function Navbar() {
 
         <a
           href="#contact"
-          className="group hidden items-center gap-1.5 rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 md:ml-8 md:inline-flex"
+          className="group hidden items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:ml-8 md:inline-flex"
         >
-          Liên hệ ngay
+          Get a Quote
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
         </a>
 
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="inline-flex items-center justify-center rounded-lg p-2 text-slate-950 md:hidden"
+          className="inline-flex items-center justify-center rounded-lg p-2 text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:hidden"
           aria-label="Mở menu"
           aria-expanded={open}
         >
@@ -76,15 +69,15 @@ export default function Navbar() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="overflow-hidden border-b border-slate-200 bg-slate-50 md:hidden"
+            className="overflow-hidden border-b border-white/10 bg-base md:hidden"
           >
             <div className="flex flex-col gap-1 px-6 py-4">
-              {NAV_LINKS.map((link) => (
+              {NAV_ITEMS.map((link) => (
                 <a
-                  key={link.href}
+                  key={link.label}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100"
+                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted hover:bg-white/5 hover:text-ink"
                 >
                   {link.label}
                 </a>
@@ -92,9 +85,9 @@ export default function Navbar() {
               <a
                 href="#contact"
                 onClick={() => setOpen(false)}
-                className="mt-2 inline-flex items-center justify-center gap-1.5 rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white"
+                className="mt-2 inline-flex items-center justify-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-ink"
               >
-                Liên hệ ngay
+                Get a Quote
                 <ArrowRight className="h-4 w-4" />
               </a>
             </div>

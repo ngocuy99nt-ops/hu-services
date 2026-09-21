@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { SITE } from "@/data/site";
 import "./globals.css";
 
 const inter = Inter({
@@ -7,9 +10,24 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "HU Web Services — Đối tác Công nghệ Vận hành cho Doanh nghiệp",
-  description:
-    "Phát triển hệ thống quản lý nội bộ, tự động hóa quy trình và tích hợp API theo nhu cầu thực tế của doanh nghiệp.",
+  metadataBase: new URL(SITE.domain),
+  title: `${SITE.name} — ${SITE.tagline}`,
+  description: SITE.description,
+  openGraph: {
+    type: "website",
+    url: SITE.domain,
+    siteName: SITE.name,
+    title: `${SITE.name} — ${SITE.tagline}`,
+    description: SITE.description,
+    images: [{ url: "/logo-icon.png", width: 973, height: 973, alt: `${SITE.name} logo` }],
+    locale: "vi_VN",
+  },
+  twitter: {
+    card: "summary",
+    title: `${SITE.name} — ${SITE.tagline}`,
+    description: SITE.description,
+    images: ["/logo-icon.png"],
+  },
 };
 
 export default function RootLayout({
@@ -17,10 +35,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: SITE.name,
+    url: SITE.domain,
+    description: SITE.description,
+    email: SITE.email,
+    telephone: SITE.phone,
+    sameAs: [SITE.facebook],
+  };
+
   return (
     <html lang="vi">
-      <body className={`${inter.className} bg-slate-50 text-slate-950 antialiased`}>
-        {children}
+      <body className={`${inter.className} bg-base text-ink antialiased`}>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <Navbar />
+        <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );

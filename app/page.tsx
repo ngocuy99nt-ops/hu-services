@@ -1,21 +1,27 @@
-import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
-import Workflow from "@/components/Workflow";
+import FeaturedWork from "@/components/FeaturedWork";
+import WhyUs from "@/components/WhyUs";
+import Process from "@/components/Process";
+import TechMarquee from "@/components/TechMarquee";
+import Pricing from "@/components/Pricing";
+import About from "@/components/About";
+import Faq from "@/components/Faq";
 import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
     <>
-      <Navbar />
-      <main>
-        <Hero />
-        <Services />
-        <Workflow />
-        <Contact />
-      </main>
-      <Footer />
+      <Hero />
+      <Services />
+      <FeaturedWork />
+      <WhyUs />
+      <Process />
+      <TechMarquee />
+      <Pricing />
+      <About />
+      <Faq />
+      <Contact />
     </>
   );
 }

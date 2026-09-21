@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { Mail } from "lucide-react";
+import { SITE, NAV_ITEMS } from "@/data/site";
+import { SERVICES } from "@/data/services";
 
 function GithubIcon({ className }: { className?: string }) {
   return (
@@ -25,51 +27,31 @@ function FacebookIcon({ className }: { className?: string }) {
   );
 }
 
-const FOOTER_LINKS = [
-  { href: "#services", label: "Dịch vụ" },
-  { href: "#workflow", label: "Quy trình" },
-  { href: "#contact", label: "Liên hệ" },
-];
-
 const SOCIAL_LINKS = [
   { href: "https://github.com/", label: "GitHub", icon: GithubIcon },
   { href: "https://linkedin.com/", label: "LinkedIn", icon: LinkedinIcon },
-  { href: "https://www.facebook.com/huwebservices", label: "Facebook", icon: FacebookIcon },
+  { href: SITE.facebook, label: "Facebook", icon: FacebookIcon },
+];
+
+const LEGAL_LINKS = [
+  { href: "/privacy", label: "Privacy Policy" },
+  { href: "/terms", label: "Terms" },
 ];
 
 export default function Footer() {
   return (
-    <footer className="border-t border-slate-200 bg-slate-50">
+    <footer className="border-t border-white/10 bg-surface">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
-        <div className="grid gap-12 md:grid-cols-3">
-          <div>
+        <div className="grid gap-12 md:grid-cols-4">
+          <div className="md:col-span-2">
             <a href="#home" className="flex items-center gap-2">
-              <Image src="/logo-icon.png" alt="HU Web Services logo" width={32} height={32} className="h-8 w-8" />
-              <span className="text-xl font-extrabold tracking-tight text-slate-950">
-                HU <span className="text-blue-600">Web Services</span>
+              <Image src="/logo-icon.png" alt={`${SITE.name} logo`} width={32} height={32} className="h-8 w-8" />
+              <span className="text-xl font-extrabold tracking-tight text-ink">
+                {SITE.shortName} <span className="text-accent">Web Services</span>
               </span>
             </a>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-600">
-              Đối tác công nghệ vận hành cho doanh nghiệp SME, chủ kho bãi và thương hiệu thương mại điện tử.
-            </p>
-          </div>
-
-          <div>
-            <p className="text-sm font-semibold text-slate-950">Điều hướng</p>
-            <ul className="mt-4 flex flex-col gap-3">
-              {FOOTER_LINKS.map((link) => (
-                <li key={link.href}>
-                  <a href={link.href} className="text-sm text-slate-600 transition-colors hover:text-blue-600">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <p className="text-sm font-semibold text-slate-950">Kết nối</p>
-            <div className="mt-4 flex items-center gap-3">
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted">{SITE.description}</p>
+            <div className="mt-6 flex items-center gap-3">
               {SOCIAL_LINKS.map((social) => (
                 <a
                   key={social.label}
@@ -77,24 +59,62 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-slate-600 transition-colors hover:border-blue-600 hover:text-blue-600"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-muted transition-colors hover:border-accent/40 hover:text-accent"
                 >
                   <social.icon className="h-4 w-4" />
                 </a>
               ))}
             </div>
+          </div>
+
+          <div>
+            <p className="text-sm font-semibold text-ink">Services</p>
+            <ul className="mt-4 flex flex-col gap-3">
+              {SERVICES.map((service) => (
+                <li key={service.title}>
+                  <a href="#services" className="text-sm text-muted transition-colors hover:text-accent">
+                    {service.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <p className="text-sm font-semibold text-ink">Điều hướng</p>
+            <ul className="mt-4 flex flex-col gap-3">
+              {NAV_ITEMS.filter((link, i, arr) => arr.findIndex((l) => l.href === link.href) === i).map((link) => (
+                <li key={link.href}>
+                  <a href={link.href} className="text-sm text-muted transition-colors hover:text-accent">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+              <li>
+                <a href="#contact" className="text-sm text-muted transition-colors hover:text-accent">
+                  Contact
+                </a>
+              </li>
+            </ul>
             <a
-              href="mailto:support@huwebservices.site"
-              className="mt-4 inline-flex items-center gap-2 text-sm text-slate-600 transition-colors hover:text-blue-600"
+              href={SITE.emailHref}
+              className="mt-6 inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
             >
               <Mail className="h-4 w-4" />
-              support@huwebservices.site
+              {SITE.email}
             </a>
           </div>
         </div>
 
-        <div className="mt-12 border-t border-slate-200 pt-8 text-center text-sm text-slate-500">
-          © {new Date().getFullYear()} HU Web Services. Bảo lưu mọi quyền.
+        <div className="mt-12 flex flex-col items-center gap-4 border-t border-white/10 pt-8 text-center text-sm text-muted sm:flex-row sm:justify-between">
+          <p>© {new Date().getFullYear()} {SITE.name}. Bảo lưu mọi quyền.</p>
+          <div className="flex items-center gap-6">
+            {LEGAL_LINKS.map((link) => (
+              <a key={link.href} href={link.href} className="transition-colors hover:text-accent">
+                {link.label}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </footer>
