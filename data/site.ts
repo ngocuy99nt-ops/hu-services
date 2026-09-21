@@ -18,7 +18,6 @@ export const SITE = {
 export const NAV_ITEMS: NavItem[] = [
   { label: "Services", href: "#services" },
   { label: "Solutions", href: "#services" },
-  { label: "Work", href: "#work" },
   { label: "Process", href: "#process" },
   { label: "About", href: "#about" },
 ];

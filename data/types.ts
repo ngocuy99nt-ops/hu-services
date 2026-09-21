@@ -33,16 +33,3 @@ export type PricingTier = {
   features: string[];
   highlighted?: boolean;
 };
-
-export type FaqItem = {
-  question: string;
-  answer: string;
-};
-
-export type WorkConcept = {
-  category: string;
-  title: string;
-  description: string;
-  tech: string[];
-  detail: string;
-};

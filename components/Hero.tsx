@@ -75,12 +75,6 @@ export default function Hero() {
             <span>Start a Project</span>
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </a>
-          <a
-            href="#work"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-card px-7 py-3.5 text-base font-semibold text-ink transition-colors hover:border-white/25 hover:bg-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:w-auto"
-          >
-            Explore Our Work
-          </a>
         </motion.div>
 
         <motion.div
@@ -96,48 +90,6 @@ export default function Hero() {
               <span className="text-xs font-medium text-muted">{indicator.label}</span>
             </div>
           ))}
-        </motion.div>
-
-        <motion.div initial="hidden" animate="visible" custom={5} variants={fadeUp} className="mx-auto mt-16 max-w-4xl">
-          <div className="overflow-hidden rounded-2xl border border-white/10 bg-card shadow-2xl shadow-black/40">
-            <div className="flex items-center gap-2 border-b border-white/10 bg-surface px-4 py-3">
-              <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-              <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-              <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-              <div className="ml-3 h-5 max-w-xs flex-1 rounded-md bg-white/5" />
-            </div>
-            <div className="grid grid-cols-[64px_1fr] gap-px bg-white/5 sm:grid-cols-[96px_1fr]">
-              <div className="flex flex-col gap-3 bg-card p-4">
-                <div className="h-2 w-8 rounded bg-white/10" />
-                <div className="h-2 w-10 rounded bg-primary/50" />
-                <div className="h-2 w-6 rounded bg-white/10" />
-                <div className="h-2 w-9 rounded bg-white/10" />
-              </div>
-              <div className="bg-card p-5 text-left sm:p-6">
-                <div className="mb-4 flex items-center justify-between">
-                  <div className="h-3 w-32 rounded bg-white/10" />
-                  <div className="h-7 w-20 rounded-full bg-primary/20" />
-                </div>
-                <div className="grid grid-cols-3 gap-3">
-                  {[0, 1, 2].map((i) => (
-                    <div key={i} className="rounded-xl border border-white/10 bg-surface p-3">
-                      <div className="h-1.5 w-10 rounded bg-accent/60" />
-                      <div className="mt-2 h-4 w-14 rounded bg-white/10" />
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-4 flex h-24 items-end gap-2 rounded-xl border border-white/10 bg-surface p-4" aria-hidden>
-                  {[40, 65, 50, 80, 55, 70, 45].map((h, i) => (
-                    <div
-                      key={i}
-                      className="flex-1 rounded-t bg-gradient-to-t from-primary/60 to-accent/60"
-                      style={{ height: `${h}%` }}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
         </motion.div>
       </div>
     </section>
