@@ -1,13 +1,34 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PreferencesProvider from "@/components/PreferencesProvider";
 import { SITE } from "@/data/site";
 import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin", "vietnamese"],
 });
+
+const preferencesScript = `
+(function () {
+  try {
+    var root = document.documentElement;
+    var savedTheme = localStorage.getItem("hu-theme");
+    var theme = savedTheme === "light" || savedTheme === "dark"
+      ? savedTheme
+      : window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches
+        ? "light"
+        : "dark";
+    var savedLanguage = localStorage.getItem("hu-language");
+
+    root.dataset.theme = theme;
+    if (savedLanguage === "vi" || savedLanguage === "en") root.lang = savedLanguage;
+  } catch (_) {
+    document.documentElement.dataset.theme = "dark";
+  }
+})();`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.domain),
@@ -47,12 +68,15 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="vi">
+    <html lang="vi" suppressHydrationWarning>
       <body className={`${inter.className} bg-base text-ink antialiased`}>
+        <Script id="hu-preferences" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: preferencesScript }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <PreferencesProvider>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </PreferencesProvider>
       </body>
     </html>
   );

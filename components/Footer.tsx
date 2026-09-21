@@ -1,7 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import { Mail } from "lucide-react";
-import { SITE, NAV_ITEMS } from "@/data/site";
-import { SERVICES } from "@/data/services";
+import { usePreferences } from "@/components/PreferencesProvider";
+import { SITE } from "@/data/site";
 
 function GithubIcon({ className }: { className?: string }) {
   return (
@@ -33,14 +35,11 @@ const SOCIAL_LINKS = [
   { href: SITE.facebook, label: "Facebook", icon: FacebookIcon },
 ];
 
-const LEGAL_LINKS = [
-  { href: "/privacy", label: "Privacy Policy" },
-  { href: "/terms", label: "Terms" },
-];
-
 export default function Footer() {
+  const { t } = usePreferences();
+
   return (
-    <footer className="border-t border-white/10 bg-surface">
+    <footer className="border-t border-line bg-surface">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <div className="grid gap-12 md:grid-cols-4">
           <div className="md:col-span-2">
@@ -50,7 +49,7 @@ export default function Footer() {
                 {SITE.shortName} <span className="text-accent">Web Services</span>
               </span>
             </a>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted">{SITE.description}</p>
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted">{t.footer.description}</p>
             <div className="mt-6 flex items-center gap-3">
               {SOCIAL_LINKS.map((social) => (
                 <a
@@ -59,7 +58,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-muted transition-colors hover:border-accent/40 hover:text-accent"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-line text-muted transition-colors hover:border-accent/40 hover:text-accent"
                 >
                   <social.icon className="h-4 w-4" />
                 </a>
@@ -68,12 +67,12 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="text-sm font-semibold text-ink">Services</p>
+            <p className="text-sm font-semibold text-ink">{t.footer.servicesTitle}</p>
             <ul className="mt-4 flex flex-col gap-3">
-              {SERVICES.map((service) => (
-                <li key={service.title}>
+              {t.footer.services.map((service) => (
+                <li key={service}>
                   <a href="#services" className="text-sm text-muted transition-colors hover:text-accent">
-                    {service.title}
+                    {service}
                   </a>
                 </li>
               ))}
@@ -81,9 +80,9 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="text-sm font-semibold text-ink">Điều hướng</p>
+            <p className="text-sm font-semibold text-ink">{t.footer.navigationTitle}</p>
             <ul className="mt-4 flex flex-col gap-3">
-              {NAV_ITEMS.filter((link, i, arr) => arr.findIndex((l) => l.href === link.href) === i).map((link) => (
+              {t.header.nav.filter((link, i, arr) => arr.findIndex((item) => item.href === link.href) === i).map((link) => (
                 <li key={link.href}>
                   <a href={link.href} className="text-sm text-muted transition-colors hover:text-accent">
                     {link.label}
@@ -92,7 +91,7 @@ export default function Footer() {
               ))}
               <li>
                 <a href="#contact" className="text-sm text-muted transition-colors hover:text-accent">
-                  Contact
+                  {t.footer.contact}
                 </a>
               </li>
             </ul>
@@ -106,14 +105,11 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center gap-4 border-t border-white/10 pt-8 text-center text-sm text-muted sm:flex-row sm:justify-between">
-          <p>© {new Date().getFullYear()} {SITE.name}. Bảo lưu mọi quyền.</p>
+        <div className="mt-12 flex flex-col items-center gap-4 border-t border-line pt-8 text-center text-sm text-muted sm:flex-row sm:justify-between">
+          <p>© {new Date().getFullYear()} {SITE.name}. {t.footer.copyright}</p>
           <div className="flex items-center gap-6">
-            {LEGAL_LINKS.map((link) => (
-              <a key={link.href} href={link.href} className="transition-colors hover:text-accent">
-                {link.label}
-              </a>
-            ))}
+            <a href="/privacy" className="transition-colors hover:text-accent">{t.footer.privacy}</a>
+            <a href="/terms" className="transition-colors hover:text-accent">{t.footer.terms}</a>
           </div>
         </div>
       </div>

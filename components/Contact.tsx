@@ -3,9 +3,9 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, Loader2, Mail, MessageCircle, Phone, Send } from "lucide-react";
+import { usePreferences } from "@/components/PreferencesProvider";
 import { useFadeUp } from "@/lib/motion";
 import { SITE } from "@/data/site";
-import { SERVICE_OPTIONS, BUDGET_OPTIONS } from "@/data/contact";
 
 type FormState = {
   name: string;
@@ -25,17 +25,17 @@ const INITIAL_STATE: FormState = {
   company: "",
 };
 
-const CONTACT_CHANNELS = [
-  { icon: MessageCircle, label: "Zalo", value: "Chat qua Zalo", href: SITE.zalo },
-  { icon: Mail, label: "Email", value: SITE.email, href: SITE.emailHref },
-  { icon: Phone, label: "Điện thoại", value: SITE.phone, href: SITE.phoneHref },
-];
-
 export default function Contact() {
   const [form, setForm] = useState<FormState>(INITIAL_STATE);
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const fadeUp = useFadeUp();
+  const { t } = usePreferences();
+  const contactChannels = [
+    { icon: MessageCircle, label: "Zalo", value: t.contact.channels.zalo, href: SITE.zalo },
+    { icon: Mail, label: "Email", value: SITE.email, href: SITE.emailHref },
+    { icon: Phone, label: t.contact.channels.phone, value: SITE.phone, href: SITE.phoneHref },
+  ];
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -53,17 +53,17 @@ export default function Contact() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      const data = await res.json();
+      await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error ?? "Gửi yêu cầu thất bại. Vui lòng thử lại.");
+        throw new Error(t.contact.form.error);
       }
 
       setStatus("success");
       setForm(INITIAL_STATE);
     } catch (err) {
       setStatus("idle");
-      setErrorMessage(err instanceof Error ? err.message : "Gửi yêu cầu thất bại. Vui lòng thử lại.");
+      setErrorMessage(err instanceof Error ? err.message : t.contact.form.error);
     }
   };
 
@@ -79,16 +79,14 @@ export default function Contact() {
             variants={fadeUp}
             className="lg:col-span-2"
           >
-            <span className="text-sm font-semibold uppercase tracking-wider text-accent">Get in touch</span>
+            <span className="text-sm font-semibold uppercase tracking-wider text-accent">{t.contact.eyebrow}</span>
             <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
-              Có ý tưởng? Cùng xây thứ gì đó hữu ích.
+              {t.contact.title}
             </h2>
-            <p className="mt-4 text-lg text-muted">
-              Cho tôi biết ngắn gọn bạn đang xây gì. Tôi sẽ giúp bạn xác định hướng kỹ thuật phù hợp nhất.
-            </p>
+            <p className="mt-4 text-lg text-muted">{t.contact.description}</p>
 
             <ul className="mt-10 flex flex-col gap-5">
-              {CONTACT_CHANNELS.map((channel) => (
+              {contactChannels.map((channel) => (
                 <li key={channel.label}>
                   <a href={channel.href} className="group flex items-center gap-4">
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-accent">
@@ -114,20 +112,18 @@ export default function Contact() {
             variants={fadeUp}
             className="lg:col-span-3"
           >
-            <div className="rounded-2xl border border-white/10 bg-card p-8">
+            <div className="rounded-2xl border border-line bg-card p-8">
               {status === "success" ? (
                 <div className="flex min-h-[320px] flex-col items-center justify-center text-center">
                   <CheckCircle2 className="h-12 w-12 text-accent" />
-                  <h3 className="mt-4 text-xl font-bold text-ink">Đã gửi yêu cầu thành công!</h3>
-                  <p className="mt-2 max-w-sm text-sm text-muted">
-                    Cảm ơn bạn đã liên hệ. Tôi sẽ phản hồi qua thông tin bạn cung cấp trong thời gian sớm nhất.
-                  </p>
+                  <h3 className="mt-4 text-xl font-bold text-ink">{t.contact.form.successTitle}</h3>
+                  <p className="mt-2 max-w-sm text-sm text-muted">{t.contact.form.successDescription}</p>
                   <button
                     type="button"
                     onClick={() => setStatus("idle")}
                     className="mt-6 text-sm font-semibold text-accent hover:text-ink"
                   >
-                    Gửi một yêu cầu khác
+                    {t.contact.form.sendAnother}
                   </button>
                 </div>
               ) : (
@@ -148,8 +144,8 @@ export default function Contact() {
 
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div className="flex flex-col gap-2">
-                      <label htmlFor="name" className="text-sm font-medium text-slate-300">
-                        Họ và tên
+                      <label htmlFor="name" className="text-sm font-medium text-body">
+                        {t.contact.form.name}
                       </label>
                       <input
                         id="name"
@@ -159,13 +155,13 @@ export default function Contact() {
                         maxLength={100}
                         value={form.name}
                         onChange={handleChange}
-                        placeholder="Nguyễn Văn A"
-                        className="rounded-xl border border-white/10 bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accent/20"
+                        placeholder={t.contact.form.namePlaceholder}
+                        className="rounded-xl border border-line bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accent/20"
                       />
                     </div>
                     <div className="flex flex-col gap-2">
-                      <label htmlFor="contact" className="text-sm font-medium text-slate-300">
-                        Điện thoại hoặc Email
+                      <label htmlFor="contact" className="text-sm font-medium text-body">
+                        {t.contact.form.contact}
                       </label>
                       <input
                         id="contact"
@@ -175,16 +171,16 @@ export default function Contact() {
                         maxLength={100}
                         value={form.contact}
                         onChange={handleChange}
-                        placeholder="09xx xxx xxx hoặc ban@congty.vn"
-                        className="rounded-xl border border-white/10 bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accent/20"
+                        placeholder={t.contact.form.contactPlaceholder}
+                        className="rounded-xl border border-line bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accent/20"
                       />
                     </div>
                   </div>
 
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div className="flex flex-col gap-2">
-                      <label htmlFor="service" className="text-sm font-medium text-slate-300">
-                        Dịch vụ quan tâm
+                      <label htmlFor="service" className="text-sm font-medium text-body">
+                        {t.contact.form.service}
                       </label>
                       <select
                         id="service"
@@ -192,21 +188,21 @@ export default function Contact() {
                         required
                         value={form.service}
                         onChange={handleChange}
-                        className="rounded-xl border border-white/10 bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors focus:border-accent focus:ring-2 focus:ring-accent/20"
+                        className="rounded-xl border border-line bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors focus:border-accent focus:ring-2 focus:ring-accent/20"
                       >
                         <option value="" disabled>
-                          Chọn dịch vụ
+                          {t.contact.form.servicePlaceholder}
                         </option>
-                        {SERVICE_OPTIONS.map((option) => (
-                          <option key={option} value={option}>
-                            {option}
+                        {t.contact.form.serviceOptions.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
                           </option>
                         ))}
                       </select>
                     </div>
                     <div className="flex flex-col gap-2">
-                      <label htmlFor="budget" className="text-sm font-medium text-slate-300">
-                        Ngân sách dự kiến
+                      <label htmlFor="budget" className="text-sm font-medium text-body">
+                        {t.contact.form.budget}
                       </label>
                       <select
                         id="budget"
@@ -214,14 +210,14 @@ export default function Contact() {
                         required
                         value={form.budget}
                         onChange={handleChange}
-                        className="rounded-xl border border-white/10 bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors focus:border-accent focus:ring-2 focus:ring-accent/20"
+                        className="rounded-xl border border-line bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors focus:border-accent focus:ring-2 focus:ring-accent/20"
                       >
                         <option value="" disabled>
-                          Chọn khoảng ngân sách
+                          {t.contact.form.budgetPlaceholder}
                         </option>
-                        {BUDGET_OPTIONS.map((option) => (
-                          <option key={option} value={option}>
-                            {option}
+                        {t.contact.form.budgetOptions.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
                           </option>
                         ))}
                       </select>
@@ -229,8 +225,8 @@ export default function Contact() {
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="message" className="text-sm font-medium text-slate-300">
-                      Mô tả dự án
+                    <label htmlFor="message" className="text-sm font-medium text-body">
+                      {t.contact.form.message}
                     </label>
                     <textarea
                       id="message"
@@ -240,8 +236,8 @@ export default function Contact() {
                       maxLength={2000}
                       value={form.message}
                       onChange={handleChange}
-                      placeholder="Mô tả ngắn gọn bài toán hoặc hệ thống bạn đang cần..."
-                      className="resize-none rounded-xl border border-white/10 bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accent/20"
+                      placeholder={t.contact.form.messagePlaceholder}
+                      className="resize-none rounded-xl border border-line bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accent/20"
                     />
                   </div>
 
@@ -254,16 +250,16 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={status === "submitting"}
-                    className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 text-base font-semibold text-ink transition-colors hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                    className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 text-[1rem] font-semibold text-on-primary transition-colors hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                   >
                     {status === "submitting" ? (
                       <>
                         <Loader2 className="h-4 w-4 animate-spin" />
-                        Đang gửi...
+                        {t.contact.form.submitting}
                       </>
                     ) : (
                       <>
-                        Gửi yêu cầu tư vấn
+                        {t.contact.form.submit}
                         <Send className="h-4 w-4" />
                       </>
                     )}
